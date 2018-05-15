@@ -1,0 +1,11 @@
+## HDFS Spark execution output
+
+```sh
+[dobeslao@ip-172-31-50-30 ~]$  hdfs dfs -cat hdfs://ip-172-31-59-75.ec2.internal:8020/user/dobeslao/spark/output/part-00000
+(a,1)
+(b,2)
+(c,3)
+(x,5)
+(y,2)
+(z,3)
+```
