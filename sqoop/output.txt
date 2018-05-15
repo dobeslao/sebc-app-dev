@@ -1,0 +1,10 @@
+## HDFS verification
+
+```sh
+[dobeslao@ip-172-31-50-30 sqoop]$ hdfs dfs -ls /user/dobeslao/sqoop/input
+Found 2 items
+-rw-r--r--   3 dobeslao hadoop          0 2018-05-15 15:31 /user/dobeslao/sqoop/input/_SUCCESS
+-rw-r--r--   3 dobeslao hadoop         49 2018-05-15 15:31 /user/dobeslao/sqoop/input/part-m-00000
+[dobeslao@ip-172-31-50-30 sqoop]$  hdfs dfs -cat /user/dobeslao/sqoop/input/part-m-00000
+5.14.3|ip-172-31-51-70.ec2.internal/172.31.51.70
+```
