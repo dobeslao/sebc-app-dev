@@ -1,0 +1,81 @@
+## HDFS Flume ingestion content
+
+```sh
+[dobeslao@ip-172-31-50-30 flume]$ hdfs dfs -ls -R /user/dobeslao/input
+drwxrwxr-x   - dobeslao hadoop          0 2018-05-15 17:48 /user/dobeslao/input/201805151744
+-rw-r--r--   3 dobeslao hadoop       1520 2018-05-15 17:44 /user/dobeslao/input/201805151744/centinel.1526406282367.txt
+-rw-r--r--   3 dobeslao hadoop       1520 2018-05-15 17:44 /user/dobeslao/input/201805151744/centinel.1526406282368.txt
+-rw-r--r--   3 dobeslao hadoop        950 2018-05-15 17:48 /user/dobeslao/input/201805151744/centinel.1526406282369.txt
+drwxrwxr-x   - dobeslao hadoop          0 2018-05-15 17:48 /user/dobeslao/input/201805151745
+-rw-r--r--   3 dobeslao hadoop       1520 2018-05-15 17:45 /user/dobeslao/input/201805151745/centinel.1526406302417.txt
+-rw-r--r--   3 dobeslao hadoop       1520 2018-05-15 17:45 /user/dobeslao/input/201805151745/centinel.1526406302418.txt
+-rw-r--r--   3 dobeslao hadoop       1520 2018-05-15 17:45 /user/dobeslao/input/201805151745/centinel.1526406302419.txt
+-rw-r--r--   3 dobeslao hadoop       1520 2018-05-15 17:45 /user/dobeslao/input/201805151745/centinel.1526406302420.txt
+-rw-r--r--   3 dobeslao hadoop       1520 2018-05-15 17:45 /user/dobeslao/input/201805151745/centinel.1526406302421.txt
+-rw-r--r--   3 dobeslao hadoop       1520 2018-05-15 17:45 /user/dobeslao/input/201805151745/centinel.1526406302422.txt
+-rw-r--r--   3 dobeslao hadoop       1520 2018-05-15 17:45 /user/dobeslao/input/201805151745/centinel.1526406302423.txt
+-rw-r--r--   3 dobeslao hadoop        760 2018-05-15 17:48 /user/dobeslao/input/201805151745/centinel.1526406302424.txt
+drwxrwxr-x   - dobeslao hadoop          0 2018-05-15 17:48 /user/dobeslao/input/201805151746
+-rw-r--r--   3 dobeslao hadoop       1520 2018-05-15 17:46 /user/dobeslao/input/201805151746/centinel.1526406362424.txt
+-rw-r--r--   3 dobeslao hadoop       1520 2018-05-15 17:46 /user/dobeslao/input/201805151746/centinel.1526406362425.txt
+-rw-r--r--   3 dobeslao hadoop       1520 2018-05-15 17:46 /user/dobeslao/input/201805151746/centinel.1526406362426.txt
+-rw-r--r--   3 dobeslao hadoop       1520 2018-05-15 17:46 /user/dobeslao/input/201805151746/centinel.1526406362427.txt
+-rw-r--r--   3 dobeslao hadoop       1520 2018-05-15 17:46 /user/dobeslao/input/201805151746/centinel.1526406362428.txt
+-rw-r--r--   3 dobeslao hadoop       1520 2018-05-15 17:46 /user/dobeslao/input/201805151746/centinel.1526406362429.txt
+-rw-r--r--   3 dobeslao hadoop       1520 2018-05-15 17:46 /user/dobeslao/input/201805151746/centinel.1526406362430.txt
+-rw-r--r--   3 dobeslao hadoop        760 2018-05-15 17:48 /user/dobeslao/input/201805151746/centinel.1526406362431.txt
+drwxrwxr-x   - dobeslao hadoop          0 2018-05-15 17:48 /user/dobeslao/input/201805151747
+-rw-r--r--   3 dobeslao hadoop       1520 2018-05-15 17:47 /user/dobeslao/input/201805151747/centinel.1526406422430.txt
+-rw-r--r--   3 dobeslao hadoop       1520 2018-05-15 17:47 /user/dobeslao/input/201805151747/centinel.1526406422431.txt
+-rw-r--r--   3 dobeslao hadoop       1520 2018-05-15 17:47 /user/dobeslao/input/201805151747/centinel.1526406422432.txt
+-rw-r--r--   3 dobeslao hadoop       1520 2018-05-15 17:47 /user/dobeslao/input/201805151747/centinel.1526406422433.txt
+-rw-r--r--   3 dobeslao hadoop       1520 2018-05-15 17:47 /user/dobeslao/input/201805151747/centinel.1526406422434.txt
+-rw-r--r--   3 dobeslao hadoop       1520 2018-05-15 17:47 /user/dobeslao/input/201805151747/centinel.1526406422435.txt
+-rw-r--r--   3 dobeslao hadoop       1520 2018-05-15 17:47 /user/dobeslao/input/201805151747/centinel.1526406422436.txt
+-rw-r--r--   3 dobeslao hadoop        570 2018-05-15 17:48 /user/dobeslao/input/201805151747/centinel.1526406422437.txt
+
+[dobeslao@ip-172-31-50-30 flume]$  hdfs dfs -cat /user/dobeslao/input/201805151747/centinel.1526406422436.txt
+this is a test it does not work hello
+hello world goodbye world hello again
+this is a test it does not work hello
+hello world goodbye world hello again
+this is a test it does not work hello
+hello world goodbye world hello again
+this is a test it does not work hello
+hello world goodbye world hello again
+this is a test it does not work hello
+hello world goodbye world hello again
+this is a test it does not work hello
+hello world goodbye world hello again
+hello world goodbye world hello again
+hello world goodbye world hello again
+hello world goodbye world hello again
+this is a test it does not work hello
+hello world goodbye world hello again
+this is a test it does not work hello
+hello world goodbye world hello again
+this is a test it does not work hello
+hello world goodbye world hello again
+this is a test it does not work hello
+this is a test it does not work hello
+hello world goodbye world hello again
+this is a test it does not work hello
+hello world goodbye world hello again
+this is a test it does not work hello
+hello world goodbye world hello again
+this is a test it does not work hello
+this is a test it does not work hello
+hello world goodbye world hello again
+this is a test it does not work hello
+hello world goodbye world hello again
+this is a test it does not work hello
+hello world goodbye world hello again
+this is a test it does not work hello
+this is a test it does not work hello
+hello world goodbye world hello again
+this is a test it does not work hello
+hello world goodbye world hello again
+
+[dobeslao@ip-172-31-50-30 flume]$  hdfs dfs -cat /user/dobeslao/input/201805151747/centinel.1526406422436.txt | wc -l
+40
+```
