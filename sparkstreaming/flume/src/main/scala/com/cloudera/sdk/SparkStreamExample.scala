@@ -1,6 +1,9 @@
 package com.cloudera.sdk
 
-import org.apache.spark.{SparkConf, SparkContext }
+import org.apache.spark.streaming.{StreamingContext, Seconds}
+import org.apache.spark.streaming.flume.FlumeUtils
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.{FileSystem, Path}
 import org.apache.spark.rdd.RDD
@@ -35,11 +38,19 @@ object SparkStreamExample {
 
         Logger.getRootLogger.setLevel(Level.WARN)
 
-        val ssc = new StreamingContext(conf, Seconds(5))
+        val ssc = new StreamingContext(sc, Seconds(5))
 
         /* READ STREAM FROM FLUME AND PRINT COUNTS */
+        val flumeStream = FlumeUtils.createStream(ssc, host, port)
+        val lines = flumeStream.map {record => {(new String(record.event.getBody().array()))}}
+        val counts =  lines.
+                                    flatMap(rec => rec.split(" ")).
+                                    map((_, 1)).
+                                    reduceByKey(_ + _)
         counts.print()
 
         /* DON'T FORGET TO START THE STREAM SESSION */
+        ssc.start()
+        ssc.awaitTermination()
     }
 }

@@ -1,7 +1,13 @@
 #!/bin/sh
 
+DIR_REL=`dirname $0`
+cd $DIR_REL
+DIR=`pwd`
+cd -
+cd - > /dev/null
+
 ITER=1
-FILE=${PWD}/words.dat
+FILE=${DIR}/words.dat
 LINES=$(wc -l ${FILE} | awk -F' ' '{print $1}')
 
 while true
