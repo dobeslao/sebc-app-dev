@@ -1,0 +1,41 @@
+## Diseño de solución esquema en HBase
+
+### Consideraciones
+
+> Se considera que:
+
+ * Todos los dominios cuentan con servidores en HA para la ateción de la demanda de usuarios.
+ * Todos los servidores de dominio escriben los accesos exitosos en sus propios archivos weblog.
+ * Los archivos weblog son recolectados y procesados de tiempo en tiempo para ser procesados.
+ * Es común que un usuario pueda conectartse desde la misma IP a diferentes dominios.
+ * Es posible que el mismo usuario provenga desde la misma IP y trate de acceder al mismo servidor.
+ * Pueden existir situaciones de DDoS, donde secuestren la información de un usuario y traten de acceder al mismo servidor, al mismo tiempo.
+ * El diseño debe considerar la distribución de inserciones cuando hay un alto volumen en un dominio.
+
+## Propuesta de solución
+
+> Utilizando las consideraciones como base, se diseño la llave bajo los siguientes elementos:
+
+    MODULE(3) | TIMESTAMP(EPOC) | USUARIO | DOMINIO | HASH(USUARIO+IP) | RANDOM
+
+ * MODULE: Se componte de un número consecutivo, entre 000 y 999, obtenido a partir del HASH(USUARIO+IP)
+ * TIMESTAMP(EPOC): Es el valor del Timestamp en representación Unix epoc.
+ * USUARIO: Es el nombre de usuario completo, dobeslao@vinkos.com, para facilitar la recuperación por usuario.
+ * DOMINIO: la parte representativa del nombre del dominio al que accede el usuario, e.g. apples
+ * HASH: Generado con el valor de USUARIO e IP, esto permite generar un valor disitintivo en el acceso al dominio y mismo usuario con diferentes direcciones IP.
+ * RANDOM: Un valor generado de forma aleatoria, que permite deduplicar registros que pueden cumplir las caracteristicas del mismo acceso en el dominio, usuario, ip y timestamp.
+
+> Para la distribución de inserciones, en los servidores regionales, se tomaran los siguientes rangos del campo MODULE.
+
+Inicio |    Fin
+---    |    ---
+000    |   166
+167    |   333
+334    |   500
+501    |   666
+667    |   833
+834    |   999
+
+## Diagrama de solución
+
+![DataModel](data-model.jpg)
