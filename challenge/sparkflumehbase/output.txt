@@ -1,0 +1,133 @@
+## SparkStreamPollingExample Flume - HBase execution
+
+Para el diseño de la tabla se consideró una familia, donde se almacenará la columna word y count, y se distribuye en seis regiones.
+
+El diseño del a llave consta de la palabra y un número aleatorio entre 0 y 10; separado por guion bajo.
+
+```sh
+##
+## HBASE CREATE TABLE WITH 6 REGIONS
+##
+
+hbase(main):018:0> create 'dobeslao_wordcount', 'wordcount_data', { NUMREGIONS => 6, SPLITALGO => 'UniformSplit' }
+0 row(s) in 2.2520 seconds
+
+=> Hbase::Table - dobeslao_wordcount
+hbase(main):019:0> get_splits 'dobeslao_wordcount'
+Total number of splits = 6
+
+=> ["*\\xAA\\xAA\\xAA\\xAA\\xAA\\xAA\\xAA", "UUUUUUUT", "\\x7F\\xFF\\xFF\\xFF\\xFF\\xFF\\xFF\\xFE", "\\xAA\\xAA\\xAA\\xAA\\xAA\\xAA\\xAA\\xA8", "\\xD5UUUUUUR"]
+hbase(main):020:0> describe 'dobeslao_wordcount'
+Table dobeslao_wordcount is ENABLED                                                                                                                                     
+dobeslao_wordcount                                                                                                                                                      
+COLUMN FAMILIES DESCRIPTION                                                                                                                                             
+{NAME => 'wordcount_data', BLOOMFILTER => 'ROW', VERSIONS => '1', IN_MEMORY => 'false', KEEP_DELETED_CELLS => 'FALSE', DATA_BLOCK_ENCODING => 'NONE', TTL => 'FOREVER', 
+COMPRESSION => 'NONE', MIN_VERSIONS => '0', BLOCKCACHE => 'true', BLOCKSIZE => '65536', REPLICATION_SCOPE => '0'}                                                       
+1 row(s) in 0.0140 seconds
+
+##
+## FLUME OUTPUT
+##
+18/05/18 17:41:15 INFO ipc.NettyServer: [id: 0x99470719, /172.31.50.30:57952 => /172.31.50.30:41415] OPEN
+18/05/18 17:41:15 INFO ipc.NettyServer: [id: 0x99470719, /172.31.50.30:57952 => /172.31.50.30:41415] BOUND: /172.31.50.30:41415
+18/05/18 17:41:15 INFO ipc.NettyServer: [id: 0x99470719, /172.31.50.30:57952 => /172.31.50.30:41415] CONNECTED: /172.31.50.30:57952
+18/05/18 17:41:15 INFO ipc.NettyServer: [id: 0x99470719, /172.31.50.30:57952 => /172.31.50.30:41415] INTEREST_CHANGED
+18/05/18 17:41:16 INFO ipc.NettyServer: [id: 0x99470719, /172.31.50.30:57952 => /172.31.50.30:41415] INTEREST_CHANGED
+18/05/18 17:41:20 INFO ipc.NettyServer: [id: 0x99470719, /172.31.50.30:57952 :> /172.31.50.30:41415] DISCONNECTED
+18/05/18 17:41:20 INFO ipc.NettyServer: [id: 0x99470719, /172.31.50.30:57952 :> /172.31.50.30:41415] UNBOUND
+18/05/18 17:41:20 INFO ipc.NettyServer: [id: 0x99470719, /172.31.50.30:57952 :> /172.31.50.30:41415] CLOSED
+18/05/18 17:41:20 INFO ipc.NettyServer: Connection to /172.31.50.30:57952 disconnected.
+18/05/18 17:49:06 INFO ipc.NettyServer: [id: 0x607fcaaa, /172.31.49.185:53502 => /172.31.50.30:41415] OPEN
+18/05/18 17:49:06 INFO ipc.NettyServer: [id: 0x607fcaaa, /172.31.49.185:53502 => /172.31.50.30:41415] BOUND: /172.31.50.30:41415
+18/05/18 17:49:06 INFO ipc.NettyServer: [id: 0x607fcaaa, /172.31.49.185:53502 => /172.31.50.30:41415] CONNECTED: /172.31.49.185:53502
+18/05/18 17:49:06 INFO ipc.NettyServer: [id: 0x607fcaaa, /172.31.49.185:53502 => /172.31.50.30:41415] INTEREST_CHANGED
+18/05/18 17:49:07 INFO ipc.NettyServer: [id: 0x607fcaaa, /172.31.49.185:53502 => /172.31.50.30:41415] INTEREST_CHANGED
+...
+
+##
+## SPARK STREAMING OUTPUT
+##
+
+-------------------------------------------
+Time: 1526667380000 ms
+-------------------------------------------
+(again,13)
+(goodbye,13)
+(work,12)
+(does,12)
+(hello,38)
+(test,12)
+(world,26)
+(not,12)
+(it,12)
+
+-------------------------------------------
+Time: 1526667385000 ms
+-------------------------------------------
+(again,16)
+(goodbye,16)
+(work,14)
+(does,14)
+(hello,46)
+(test,14)
+(world,32)
+(not,14)
+(it,14)
+
+-------------------------------------------
+Time: 1526667390000 ms
+-------------------------------------------
+
+-------------------------------------------
+Time: 1526667395000 ms
+-------------------------------------------
+(again,19)
+(goodbye,19)
+(work,21)
+(does,21)
+(hello,59)
+(test,21)
+(world,38)
+(not,21)
+(it,21)
+...
+
+##
+## HBASE SHELL OUTPUT
+##
+
+hbase(main):011:0> count 'dobeslao_wordcount'
+810 row(s) in 1.5050 seconds
+
+=> 810
+scan 'dobeslao_wordcount'
+...
+ world_58_7                                 column=wordcount_data:word, timestamp=1526666355062, value=world                                                            
+ world_60_5                                 column=wordcount_data:count, timestamp=1526666520061, value=\x00\x00\x00<                                                   
+ world_60_5                                 column=wordcount_data:word, timestamp=1526666520061, value=world                                                            
+ world_60_9                                 column=wordcount_data:count, timestamp=1526666285082, value=\x00\x00\x00<                                                   
+ world_60_9                                 column=wordcount_data:word, timestamp=1526666285082, value=world                                                            
+ world_62_2                                 column=wordcount_data:count, timestamp=1526665815120, value=\x00\x00\x00>                                                   
+ world_62_2                                 column=wordcount_data:word, timestamp=1526665815120, value=world                                                            
+ world_64_4                                 column=wordcount_data:count, timestamp=1526665855185, value=\x00\x00\x00@                                                   
+ world_64_4                                 column=wordcount_data:word, timestamp=1526665855185, value=world                                                            
+ world_64_9                                 column=wordcount_data:count, timestamp=1526666335170, value=\x00\x00\x00@                                                   
+ world_64_9                                 column=wordcount_data:word, timestamp=1526666335170, value=world                                                            
+ world_68_1                                 column=wordcount_data:count, timestamp=1526666940152, value=\x00\x00\x00D                                                   
+ world_68_1                                 column=wordcount_data:word, timestamp=1526666940152, value=world                                                            
+ world_72_0                                 column=wordcount_data:count, timestamp=1526666715071, value=\x00\x00\x00H                                                   
+ world_72_0                                 column=wordcount_data:word, timestamp=1526666715071, value=world                                                            
+ world_72_1                                 column=wordcount_data:count, timestamp=1526666480068, value=\x00\x00\x00H                                                   
+ world_72_1                                 column=wordcount_data:word, timestamp=1526666480068, value=world                                                            
+ world_74_1                                 column=wordcount_data:count, timestamp=1526666275069, value=\x00\x00\x00J                                                   
+ world_74_1                                 column=wordcount_data:word, timestamp=1526666275069, value=world                                                            
+ world_76_3                                 column=wordcount_data:count, timestamp=1526665800103, value=\x00\x00\x00L                                                   
+ world_76_3                                 column=wordcount_data:word, timestamp=1526665800103, value=world                                                            
+ world_76_6                                 column=wordcount_data:count, timestamp=1526665920075, value=\x00\x00\x00L                                                   
+ world_76_6                                 column=wordcount_data:word, timestamp=1526665920075, value=world                                                            
+ world_86_4                                 column=wordcount_data:count, timestamp=1526665840231, value=\x00\x00\x00V                                                   
+ world_86_4                                 column=wordcount_data:word, timestamp=1526665840231, value=world                                                            
+ world_92_9                                 column=wordcount_data:count, timestamp=1526665905375, value=\x00\x00\x00\x5C                                                
+ world_92_9                                 column=wordcount_data:word, timestamp=1526665905375, value=world                                                            
+947 row(s) in 0.2540 seconds
+```
